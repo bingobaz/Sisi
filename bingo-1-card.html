@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>بازی BingoBaz - 1 کارت</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: radial-gradient(circle at center, #1a0033, #000);
+      font-family: Tahoma, sans-serif;
+      color: #00ffcc;
+      text-align: center;
+      padding: 10px;
+      position: relative;
+    }
+    .sound-music {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .sound-voice {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      text-shadow: 0 0 8px #00ffcc;
+    }
+    .circle-logo {
+      background: radial-gradient(circle, #00ffcc, #009999);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+      color: black;
+      box-shadow: 0 0 12px #00ffcc;
+    }
+    .baz-text {
+      font-size: 30px;
+      font-weight: bold;
+    }
+    .cards {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .bingo-card {
+      background: #0f0f0f;
+      border: 2px solid #00ffcc;
+      border-radius: 10px;
+      width: 180px;
+      padding: 8px;
+      box-shadow: 0 0 15px #00ffcc;
+    }
+    .bingo-card table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .bingo-card td {
+      border: 1px solid #333;
+      width: 20%;
+      height: 34px;
+      font-size: 14px;
+      color: #111;
+      background-color: #fff;
+    }
+    .highlight {
+      background-color: #00ff99 !important;
+      color: black !important;
+      font-weight: bold;
+    }
+    .red-ball-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-top: 40px;
+    }
+    .red-ball {
+      background-color: red;
+      color: white;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      font-weight: bold;
+      box-shadow: 0 0 18px red;
+    }
+    .ball-label {
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffcccc;
+      text-shadow: 0 0 6px red;
+    }
+    .one-away {
+      margin-top: 20px;
+      font-size: 15px;
+      color: yellow;
+    }
+    .back {
+      display: block;
+      margin-top: 25px;
+      font-size: 14px;
+      color: #00ffcc;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <audio id="bg-music" loop>
+    <source src="https://cdn.pixabay.com/audio/2022/11/29/audio_c73a51cd1d.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="number-voice">
+    <source src="https://cdn.pixabay.com/audio/2022/03/16/audio_8e58fd39d6.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="sound-music" onclick="toggleMusic()">🎵</div>
+  <div class="sound-voice" onclick="toggleVoice()">🔈</div>
+
+  <div class="logo">
+    <div class="baz-text">BAZ</div>
+    <div class="circle-logo">BINGO</div>
+  </div>
+
+  <div class="cards">
+    <div class="bingo-card">
+      <table>
+        <tr><td>4</td><td>12</td><td class="highlight">17</td><td>28</td><td>33</td></tr>
+        <tr><td>1</td><td>13</td><td>22</td><td>39</td><td class="highlight">41</td></tr>
+        <tr><td>6</td><td>9</td><td>25</td><td>30</td><td>48</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="red-ball-container">
+    <div class="ball-label">عدد قرعه:</div>
+    <div class="red-ball">17</div>
+  </div>
+
+  <div class="one-away">ali (41)</div>
+
+  <a class="back" href="index.html">بازگشت به منوی اصلی</a>
+
+  <script>
+    const bgMusic = document.getElementById("bg-music");
+    const numberVoice = document.getElementById("number-voice");
+    let musicOn = true;
+    let voiceOn = true;
+
+    window.onload = () => {
+      bgMusic.volume = 0.2;
+      numberVoice.volume = 1;
+      bgMusic.play().catch(() => {});
+      numberVoice.play().catch(() => {});
+    };
+
+    function toggleMusic() {
+      musicOn = !musicOn;
+      document.querySelector(".sound-music").innerText = musicOn ? "🎵" : "🔇";
+      musicOn ? bgMusic.play() : bgMusic.pause();
+    }
+
+    function toggleVoice() {
+      voiceOn = !voiceOn;
+      document.querySelector(".sound-voice").innerText = voiceOn ? "🔈" : "🔇";
+      voiceOn ? numberVoice.play() : numberVoice.pause();
+    }
+  </script>
+
+</body>
+</html>
