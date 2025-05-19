@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>پنل مدیریت حرفه‌ای BingoBaz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: linear-gradient(to bottom, #1a0033, #000);
+      color: white;
+      font-family: Tahoma, sans-serif;
+      padding: 30px 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #00ffcc;
+      margin-bottom: 30px;
+    }
+    .section {
+      background-color: #2e0057;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+    h2 {
+      color: yellow;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .box {
+      background-color: #1a0033;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    textarea, input, select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+    button {
+      background-color: #00ffcc;
+      border: none;
+      color: #000;
+      padding: 8px 20px;
+      font-weight: bold;
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    ul {
+      padding-right: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>پنل مدیریت حرفه‌ای BingoBaz</h1>
+
+<div class="section">
+  <h2>درخواست‌های شارژ و برداشت</h2>
+  <div id="walletRequests" class="box">در حال بارگذاری...</div>
+</div>
+
+<div class="section">
+  <h2>درآمد سایت</h2>
+  <div id="revenueBox" class="box">در حال محاسبه...</div>
+</div>
+
+<div class="section">
+  <h2>بیشترین بازی انجام‌شده (ماه جاری)</h2>
+  <div id="topPlayers" class="box">در حال محاسبه...</div>
+</div>
+
+<div class="section">
+  <h2>بیشترین باخت بازیکنان</h2>
+  <div id="losersBox" class="box">در حال بررسی...</div>
+</div>
+
+<div class="section">
+  <h2>انتخاب برنده از هر بازی</h2>
+  <div id="gamesContainer"></div>
+</div>
+
+<script>
+function loadWalletRequests() {
+  const div = document.getElementById("walletRequests");
+  div.innerHTML = "";
+  for (let key in localStorage) {
+    if (key.startsWith("walletRequest_")) {
+      const data = JSON.parse(localStorage.getItem(key));
+      const user = key.replace("walletRequest_", "");
+      const item = document.createElement("div");
+      item.innerHTML = `<strong>${user}</strong><br>
+        شارژ TRX: ${data.trxHash || "-"} | ${data.trxAmount || "-"}<br>
+        برداشت TRX: ${data.trxWallet || "-"} | ${data.trxWithdrawAmount || "-"}<br>
+        شارژ یووچر: ${data.voucherCode || "-"} | ${data.voucherAmount || "-"}<br>
+        برداشت یووچر: ${data.voucherWithdraw || "-"}`;
+      item.className = "box";
+      div.appendChild(item);
+    }
+  }
+}
+
+function calculateRevenue() {
+  let totalIn = 0;
+  let totalOut = 0;
+  for (let key in localStorage) {
+    if (key.startsWith("walletRequest_")) {
+      const d = JSON.parse(localStorage.getItem(key));
+      totalIn += parseInt(d.trxAmount || 0) + parseInt(d.voucherAmount || 0);
+      totalOut += parseInt(d.trxWithdrawAmount || 0) + parseInt(d.voucherWithdraw || 0);
+    }
+  }
+  document.getElementById("revenueBox").innerHTML =
+    `درآمد خالص امروز: ${(totalIn - totalOut).toLocaleString()} تومان<br>
+     شارژ کل: ${totalIn.toLocaleString()} تومان | برداشت‌ها: ${totalOut.toLocaleString()} تومان`;
+}
+
+function simulateTopPlayers() {
+  const data = [
+    { name: "ali", games: 42 },
+    { name: "sara", games: 35 },
+    { name: "vahid", games: 30 }
+  ];
+  const box = document.getElementById("topPlayers");
+  box.innerHTML = data.map((p, i) => `${i + 1}. ${p.name} - ${p.games} بازی`).join("<br>");
+}
+
+function simulateTopLosers() {
+  const data = [
+    { name: "reza", lost: 1500000 },
+    { name: "mina", lost: 1200000 },
+    { name: "hossein", lost: 950000 }
+  ];
+  const box = document.getElementById("losersBox");
+  box.innerHTML = data.map((p, i) => `${i + 1}. ${p.name} - ${p.lost.toLocaleString()} تومان`).join("<br>");
+}
+
+function generateFutureGamesWithWinners() {
+  const container = document.getElementById("gamesContainer");
+  container.innerHTML = "";
+  const now = new Date();
+  const prices = [10000, 25000, 50000, 200000, 500000, 1000000];
+  const players = ["ali", "sara", "vahid", "hossein", "reza"];
+  prices.forEach(price => {
+    for (let i = 1; i <= 6; i++) {
+      const time = new Date(now.getTime() + i * 10 * 60000);
+      const gameId = `game_${price}_${i}`;
+      const box = document.createElement("div");
+      box.className = "box";
+      box.innerHTML = `
+        <strong>سالن ${price.toLocaleString()} تومانی</strong><br>
+        ساعت: ${time.getHours()}:${(time.getMinutes() + "").padStart(2, "0")}<br>
+        بازیکنان:<ul>${players.map(p => `<li>${p}</li>`).join("")}</ul>
+        <select id="winnerSelect_${gameId}">
+          ${players.map(p => `<option value="${p}">${p}</option>`).join("")}
+        </select>
+        <button onclick="saveWinner('${gameId}')">تایید برنده</button>
+      `;
+      container.appendChild(box);
+    }
+  });
+}
+
+function saveWinner(gameId) {
+  const select = document.getElementById("winnerSelect_" + gameId);
+  const winner = select.value;
+  if (winner) {
+    localStorage.setItem("winner_" + gameId, winner);
+    alert(`برنده برای ${gameId} ذخیره شد: ${winner}`);
+  }
+}
+
+loadWalletRequests();
+calculateRevenue();
+simulateTopPlayers();
+simulateTopLosers();
+generateFutureGamesWithWinners();
+setInterval(loadWalletRequests, 2000);
+</script>
+
+</body>
+</html>
