@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>انتخاب سالن - BingoBaz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      background-color: #2e003e;
+      font-family: Tahoma, sans-serif;
+      color: #00ff99;
+      text-align: center;
+    }
+
+    .logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      padding-top: 30px;
+      margin-bottom: 20px;
+    }
+
+    .circle-logo {
+      background: radial-gradient(circle, #00ff99, #009966);
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: black;
+      font-size: 20px;
+    }
+
+    .baz-text {
+      font-size: 36px;
+      font-weight: bold;
+      color: #00ff99;
+    }
+
+    .title {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      padding: 0 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background-color: #3c007a;
+      border-radius: 16px;
+      padding: 20px 10px;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .back {
+      margin: 40px 0;
+      display: block;
+      color: #00ff99;
+      text-decoration: underline;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="logo">
+    <div class="baz-text">BAZ</div>
+    <div class="circle-logo">BINGO</div>
+  </div>
+
+  <div class="title">یکی از سالن‌ها را انتخاب کنید:</div>
+
+  <div class="grid">
+    <div class="card">سالن 1<br>ورودی: 10,000 تومان</div>
+    <div class="card">سالن 2<br>ورودی: 25,000 تومان</div>
+    <div class="card">سالن 3<br>ورودی: 50,000 تومان</div>
+    <div class="card">سالن 4<br>ورودی: 100,000 تومان</div>
+    <div class="card">سالن 5<br>ورودی: 250,000 تومان</div>
+    <div class="card">سالن 6<br>ورودی: 500,000 تومان</div>
+    <div class="card">سالن 7<br>ورودی: 1,000,000 تومان</div>
+    <div class="card">سالن 8<br>ورودی: 2,500,000 تومان</div>
+  </div>
+
+  <a href="index.html" class="back">بازگشت به منوی اصلی</a>
+
+</body>
+</html>
