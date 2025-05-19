@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>انتخاب کارت - BingoBaz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      background-color: #2e003e;
+      color: #00ff99;
+      font-family: Tahoma, sans-serif;
+      text-align: center;
+      padding: 10px;
+    }
+    .logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .circle-logo {
+      background: radial-gradient(circle, #00ff99, #009966);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: black;
+      font-weight: bold;
+    }
+    .baz-text {
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .balance {
+      margin: 10px auto;
+      background: #3c007a;
+      padding: 8px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      display: inline-block;
+    }
+    h2 {
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    .cards-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .bingo-card {
+      background: white;
+      border: 2px solid #00ff99;
+      border-radius: 6px;
+      width: 120px;
+      padding: 4px;
+    }
+    .bingo-card table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .bingo-card td {
+      border: 1px solid black;
+      width: 20%;
+      height: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: black;
+    }
+    .card-checkbox {
+      margin-top: 5px;
+    }
+    .start-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #00ff99;
+      color: #2e003e;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .back {
+      display: block;
+      margin-top: 15px;
+      font-size: 13px;
+      color: #00ff99;
+      text-decoration: underline;
+    }
+    .disabled {
+      background-color: gray !important;
+      cursor: not-allowed;
+    }
+    .warning {
+      color: #ff6666;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="logo">
+    <div class="baz-text">BAZ</div>
+    <div class="circle-logo">BINGO</div>
+  </div>
+
+  <div class="balance">موجودی شما: <span id="balance">18000</span> تومان</div>
+
+  <h2>از بین کارت‌های زیر، ۱ تا ۳ کارت را انتخاب کنید</h2>
+
+  <div class="cards-container">
+    <!-- کارت‌ها -->
+    <!-- برای کوتاه شدن کد، فقط یکی نمایش داده شده، تو می‌تونی ۵ کارت مثل هم اضافه کنی -->
+    <div class="bingo-card">
+      <table>
+        <tr><td>4</td><td>17</td><td>26</td><td>33</td><td>50</td></tr>
+        <tr><td>6</td><td>12</td><td>22</td><td>37</td><td>44</td></tr>
+        <tr><td>1</td><td>10</td><td>30</td><td>42</td><td>48</td></tr>
+      </table>
+      <div class="card-checkbox">
+        <input type="checkbox" class="card-check" value="1">
+      </div>
+    </div>
+    <!-- ... چهار کارت دیگه مثل بالا اضافه کن -->
+  </div>
+
+  <div class="warning" id="warning"></div>
+
+  <button class="start-button disabled" id="startBtn" disabled>شروع بازی</button>
+
+  <a class="back" href="index.html">بازگشت به منوی اصلی</a>
+
+  <script>
+    const checkboxes = document.querySelectorAll('.card-check');
+    const startBtn = document.getElementById('startBtn');
+    const warningBox = document.getElementById('warning');
+    const balance = 18000;
+    const cardPrice = 10000;
+
+    checkboxes.forEach(cb => {
+      cb.addEventListener('change', () => {
+        const selected = [...checkboxes].filter(c => c.checked).length;
+        const canBuy = Math.floor(balance / cardPrice);
+
+        if (selected > 3) {
+          warningBox.textContent = "حداکثر می‌توانید ۳ کارت انتخاب کنید.";
+          cb.checked = false;
+        } else if (selected > canBuy) {
+          warningBox.textContent = "موجودی شما برای این تعداد کارت کافی نیست.";
+          cb.checked = false;
+        } else if (selected === 0) {
+          warningBox.textContent = "";
+          startBtn.disabled = true;
+          startBtn.classList.add('disabled');
+        } else {
+          warningBox.textContent = "";
+          startBtn.disabled = false;
+          startBtn.classList.remove('disabled');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
