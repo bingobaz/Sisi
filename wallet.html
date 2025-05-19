@@ -1,0 +1,123 @@
+<!DOCTYPE html><html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>کیف پول BingoBaz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: radial-gradient(circle, #1a0033, #000);
+      color: white;
+      font-family: Tahoma, sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    .logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+    .baz-text {
+      font-size: 32px;
+      font-weight: bold;
+      color: #00ffcc;
+    }
+    .circle-logo {
+      background: radial-gradient(circle, #00ffcc, #009999);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+      color: black;
+      box-shadow: 0 0 12px #00ffcc;
+    }
+    h3 {
+      color: yellow;
+      margin-top: 40px;
+    }
+    .box {
+      background-color: #2e0057;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px auto;
+      width: 90%;
+      max-width: 400px;
+      text-align: right;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      margin-bottom: 12px;
+      font-size: 15px;
+      border-radius: 8px;
+      border: 1px solid #888;
+      background-color: #1a0033;
+      color: white;
+      text-align: center;
+    }
+    .back {
+      margin-top: 30px;
+      display: block;
+      color: #00ffcc;
+      font-size: 15px;
+      text-decoration: underline;
+    }
+    button {
+      background-color: #00ffcc;
+      border: none;
+      color: #000;
+      padding: 12px 30px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>  <div class="logo">
+    <div class="baz-text">BAZ</div>
+    <div class="circle-logo">BINGO</div>
+  </div>  <h3>شارژ با ترون (TRX)</h3>
+  <div class="box">
+    آدرس ترون ما:
+    <div style="direction:ltr; font-weight:bold; margin: 5px 0;">
+      THdA6YDHDDAAqPaZ8Mkizv4rk2K25QJbbT
+    </div>
+    <input id="trxHash" type="text" placeholder="هش تراکنش">
+    <input id="trxAmount" type="text" placeholder="مبلغ ارسال شده">
+  </div>  <h3>برداشت با ترون (TRX)</h3>
+  <div class="box">
+    <input id="trxWallet" type="text" placeholder="آدرس ولت شما (TRX)">
+    <input id="trxWithdrawAmount" type="text" placeholder="مبلغ درخواستی">
+  </div>  <h3>شارژ با کد یووچر</h3>
+  <div class="box">
+    <input id="voucherCode" type="text" placeholder="کد یووچر">
+    <input id="voucherAmount" type="text" placeholder="مبلغ ارسال شده">
+  </div>  <h3>برداشت با یووچر</h3>
+  <div class="box">
+    <input id="voucherWithdraw" type="text" placeholder="مبلغ درخواستی">
+  </div><button onclick="submitForm()">ارسال</button> <a class="back" href="index.html">بازگشت به منوی اصلی</a>
+
+  <script>
+    function submitForm() {
+      const data = {
+        trxHash: document.getElementById('trxHash').value,
+        trxAmount: document.getElementById('trxAmount').value,
+        trxWallet: document.getElementById('trxWallet').value,
+        trxWithdrawAmount: document.getElementById('trxWithdrawAmount').value,
+        voucherCode: document.getElementById('voucherCode').value,
+        voucherAmount: document.getElementById('voucherAmount').value,
+        voucherWithdraw: document.getElementById('voucherWithdraw').value
+      };
+      localStorage.setItem('walletRequest', JSON.stringify(data));
+      alert('درخواست شما برای مدیر ذخیره شد');
+    }
+  </script></body>
+</html>
