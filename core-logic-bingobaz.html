@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>شبیه‌ساز منطق BingoBaz</title>
+  <style>
+    body {
+      font-family: Tahoma, sans-serif;
+      background: #1a0033;
+      color: #00ffcc;
+      padding: 40px;
+    }
+    h1 {
+      color: #00ffcc;
+      text-align: center;
+    }
+    .log {
+      background: #000;
+      padding: 20px;
+      border-radius: 10px;
+      height: 400px;
+      overflow-y: scroll;
+      font-size: 14px;
+      margin-top: 20px;
+      white-space: pre-line;
+    }
+    button {
+      padding: 10px 20px;
+      background: #00ffcc;
+      border: none;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 6px;
+      margin: 10px auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<h1>منطق شبیه‌سازی بازی BingoBaz</h1>
+<button onclick="startGame()">شروع بازی تستی</button>
+
+<div class="log" id="logBox">آماده برای شروع...</div>
+
+<script>
+let log = "";
+let numbersCalled = [];
+let totalNumbersToDraw = 90;
+let winnerSetManually = null;
+let players = [
+  { name: "Ali", cards: [], filled: 0 },
+  { name: "Sara", cards: [], filled: 0 }
+];
+let gameStarted = false;
+
+function logMsg(msg) {
+  log += msg + "\n";
+  document.getElementById("logBox").innerText = log;
+}
+
+function startGame() {
+  log = "";
+  numbersCalled = [];
+  gameStarted = true;
+
+  // ایجاد کارت‌های ساده با اعداد تصادفی برای تست
+  players.forEach(player => {
+    player.cards = Array.from({ length: 15 }, () => Math.floor(Math.random() * 90) + 1);
+    player.filled = 0;
+  });
+
+  logMsg("بازی شروع شد...\nدر حال خواندن اعداد...");
+
+  drawNumber(1);
+}
+
+function drawNumber(i) {
+  if (!gameStarted || i > 90) return;
+
+  const num = Math.floor(Math.random() * 90) + 1;
+  if (numbersCalled.includes(num)) {
+    drawNumber(i); // تکراری؟ رد بده
+    return;
+  }
+
+  numbersCalled.push(num);
+  logMsg(`عدد ${num} خوانده شد. (تعداد کل: ${numbersCalled.length})`);
+
+  let winnerFound = false;
+
+  players.forEach(player => {
+    if (player.cards.includes(num)) player.filled++;
+    if (player.filled >= 15 && numbersCalled.length >= 40) {
+      winnerFound = true;
+      logMsg(`** ${player.name} برنده شد!`);
+    }
+  });
+
+  if (!winnerFound) {
+    setTimeout(() => drawNumber(i + 1), 500);
+  } else {
+    gameStarted = false;
+    saveToHistory();
+  }
+}
+
+function saveToHistory() {
+  const history = JSON.parse(localStorage.getItem("history") || "[]");
+  history.push({
+    time: new Date().toLocaleString("fa-IR"),
+    players: players.map(p => p.name),
+    count: numbersCalled.length
+  });
+  localStorage.setItem("history", JSON.stringify(history));
+  logMsg("\nبازی به تاریخچه ذخیره شد.");
+}
+
+// پاکسازی تاریخچه قدیمی (شبیه حذف هر ۲۴ ساعت)
+function cleanHistory() {
+  const h = JSON.parse(localStorage.getItem("history") || "[]");
+  const newHistory = h.filter(item => {
+    const date = new Date(item.time);
+    const now = new Date();
+    return (now - date) <= 24 * 60 * 60 * 1000;
+  });
+  localStorage.setItem("history", JSON.stringify(newHistory));
+}
+
+cleanHistory();
+</script>
+
+</body>
+</html>
